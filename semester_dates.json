@@ -1,0 +1,9 @@
+{
+    "Sommersemester 2024": {
+        "semester_period": ["2024-04-01", "2024-09-30"],
+        "lecture_period": ["2024-04-08", "2024-07-19"],
+        "breaks": [
+            ["Pfingsferien", "2024-05-21", "2024-05-25"]
+        ]
+    }
+}
