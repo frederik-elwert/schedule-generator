@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import io
 import logging
 import sys
 
@@ -43,6 +44,25 @@ def main():
         hide_index=True,
         use_container_width=True,
         column_config={"Date": "Datum", "Topic": "Thema"},
+    )
+    with io.BytesIO() as outfile:
+        schedule_df.to_excel(outfile, index=False)
+        excel_file = outfile.getvalue()
+    with io.StringIO() as outfile:
+        schedule_df.to_markdown(outfile, index=False)
+        markdown_file = outfile.getvalue()
+    md_col, xl_col = st.columns(2)
+    md_col.download_button(
+        "Download Markdown",
+        markdown_file,
+        file_name="schedule.md",
+        mime="text/markdown",
+    )
+    xl_col.download_button(
+        "Download Excel",
+        excel_file,
+        file_name="schedule.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
 
