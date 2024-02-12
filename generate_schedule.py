@@ -51,6 +51,12 @@ def annotate(date, breaks, state_holidays):
     return (date, None)
 
 
+def get_semesters():
+    with SEMESTER_FILE.open() as json_file:
+        semester_dates = json.load(json_file, object_hook=_json_date_hook)
+        return semester_dates.keys()
+
+
 def get_semester_dates(semester):
     with SEMESTER_FILE.open() as json_file:
         semester_dates = json.load(json_file, object_hook=_json_date_hook)
