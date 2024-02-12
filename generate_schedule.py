@@ -115,7 +115,7 @@ def to_pandas(schedule_dates_annotated):
             date_formatted = date_arrow.format("D.M.YYYY")
             last_year = date.year
         dates_formatted.append(date_formatted)
-    return pd.DataFrame(dict(date=dates_formatted, topic=annotations))
+    return pd.DataFrame(dict(Date=dates_formatted, Topic=annotations))
 
 
 def main():
