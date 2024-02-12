@@ -23,13 +23,16 @@ WEEKDAYS = dict(
 
 def main():
     st.title("Seminarplan-Generator")
+    # Inputs
     semester_date_options = generate_schedule.get_semesters()
     semester = st.selectbox("Semester", semester_date_options)
+    course_name = st.text_input("Name der Veranstaltung")
     col_day, col_start, col_end = st.columns(3)
     weekday_choices = WEEKDAYS.keys()
     weekday = col_day.selectbox("Wochentag", weekday_choices)
     start_time = col_start.time_input("Startzeit")
     end_time = col_end.time_input("Endzeit")
+    # Output
     st.write(f"Zeitplan für {weekday} von {start_time} bis {end_time}")
     semester_dates = generate_schedule.get_semester_dates(semester)
     schedule_dates = generate_schedule.generate_schedule(
@@ -45,6 +48,8 @@ def main():
         use_container_width=True,
         column_config={"Date": "Datum", "Topic": "Thema"},
     )
+    # Downloads
+    filename_base = '-'.join(course_name.lower().replace('/', '-').split())
     with io.BytesIO() as outfile:
         schedule_df.to_excel(outfile, index=False)
         excel_file = outfile.getvalue()
@@ -55,13 +60,13 @@ def main():
     md_col.download_button(
         "Download Markdown",
         markdown_file,
-        file_name="schedule.md",
+        file_name=f"{filename_base}.md",
         mime="text/markdown",
     )
     xl_col.download_button(
         "Download Excel",
         excel_file,
-        file_name="schedule.xlsx",
+        file_name=f"{filename_base}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
