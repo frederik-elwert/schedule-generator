@@ -94,8 +94,8 @@ def filter_schedule(schedule_dates):
 def get_schedule_intervals(schedule_dates, start_time, end_time):
     return [
         (
-            datetime.datetime.combine(date, datetime.time(*start_time)),
-            datetime.datetime.combine(date, datetime.time(*end_time)),
+            datetime.datetime.combine(date, start_time),
+            datetime.datetime.combine(date, end_time),
         )
         for date in schedule_dates
     ]
@@ -155,7 +155,8 @@ def main():
         schedule_dates_filtered = filter_schedule(schedule_dates_annotated)
 
         def convert_time(s):
-            return tuple(int(p) for p in s.split(":"))
+            time_parts = tuple(int(p) for p in s.split(":"))
+            return datetime.time(*time_parts)
 
         start_time = convert_time(args.start_time)
         end_time = convert_time(args.end_time)
