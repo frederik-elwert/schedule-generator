@@ -49,7 +49,7 @@ def main():
         column_config={"Date": "Datum", "Topic": "Thema"},
     )
     # Downloads
-    filename_base = '-'.join(course_name.lower().replace('/', '-').split())
+    filename_base = "-".join(course_name.lower().replace("/", "-").split())
     with io.BytesIO() as outfile:
         schedule_df.to_excel(outfile, index=False)
         excel_file = outfile.getvalue()
@@ -69,7 +69,9 @@ def main():
         file_name=f"{filename_base}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
-    schedule_dates_filtered = generate_schedule.filter_schedule(schedule_dates_annotated)
+    schedule_dates_filtered = generate_schedule.filter_schedule(
+        schedule_dates_annotated
+    )
     schedule_intervals = generate_schedule.get_schedule_intervals(
         schedule_dates_filtered, start_time, end_time
     )
@@ -79,6 +81,14 @@ def main():
         cal.to_ical(),
         file_name=f"{filename_base}.ics",
         mime="text/calendar",
+    )
+    st.divider()
+    st.caption(
+        "Erstellt von Frederik Elwert. Diese App berücksichtigt derzeit "
+        "die Semesterzeiten der Ruhr-Uni Bochum "
+        "und Feiertage in NRW. Der Code liegt auf "
+        "[GitHub](https://github.com/frederik-elwert/schedule-generator) und darf "
+        "gerne angepasst werden."
     )
 
 
