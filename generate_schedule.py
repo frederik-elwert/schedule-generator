@@ -14,6 +14,7 @@ from holidays.countries.germany import Germany
 
 SEMESTER_FILE = Path("semester_dates.json")
 LOCALE = "de-DE"
+TIMEZONE = "Europe/Berlin"
 
 
 def _try_date(v):
@@ -42,8 +43,9 @@ def annotate(date, breaks, state_holidays):
     date_arrow = arrow.Arrow.fromdate(date)
     for break_name, break_start, break_end in breaks:
         if date_arrow.is_between(
-            arrow.Arrow.fromdate(break_start), arrow.Arrow.fromdate(break_end),
-            bounds="[]"
+            arrow.Arrow.fromdate(break_start),
+            arrow.Arrow.fromdate(break_end),
+            bounds="[]",
         ):
             return (date, break_name)
     if date in state_holidays:
@@ -98,10 +100,13 @@ def filter_schedule(schedule_dates):
 
 
 def get_schedule_intervals(schedule_dates, start_time, end_time):
+    from zoneinfo import ZoneInfo
+
+    tz = ZoneInfo(TIMEZONE)
     return [
         (
-            datetime.datetime.combine(date, start_time),
-            datetime.datetime.combine(date, end_time),
+            datetime.datetime.combine(date, start_time, tzinfo=tz),
+            datetime.datetime.combine(date, end_time, tzinfo=tz),
         )
         for date in schedule_dates
     ]
@@ -122,6 +127,24 @@ def to_pandas(schedule_dates_annotated):
             last_year = date.year
         dates_formatted.append(date_formatted)
     return pd.DataFrame(dict(Date=dates_formatted, Topic=annotations))
+
+
+def to_ical(schedule_intervals, name="Course"):
+    import uuid
+    import icalendar
+
+    cal = icalendar.Calendar()
+    cal.add("prodid", "-//Schedule Generator//example.com//")
+    cal.add("version", "2.0")
+    for dt_start, dt_end in schedule_intervals:
+        event = icalendar.Event()
+        event.add("summary", name)
+        event.add("dtstart", dt_start)
+        event.add("dtend", dt_end)
+        event.add("dtstamp", datetime.datetime.now(tz=datetime.timezone.utc))
+        event.add("uid", uuid.uuid4())
+        cal.add_component(event)
+    return cal
 
 
 def main():
@@ -169,6 +192,9 @@ def main():
         schedule_intervals = get_schedule_intervals(
             schedule_dates_filtered, start_time, end_time
         )
+        cal = to_ical(schedule_intervals)
+        with outpath.open("wb") as outfile:
+            outfile.write(cal.to_ical())
     else:
         print(f"Unknown output format {ext}.")
         return 1

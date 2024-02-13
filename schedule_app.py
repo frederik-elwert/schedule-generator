@@ -56,7 +56,7 @@ def main():
     with io.StringIO() as outfile:
         schedule_df.to_markdown(outfile, index=False)
         markdown_file = outfile.getvalue()
-    md_col, xl_col = st.columns(2)
+    md_col, xl_col, col_ics = st.columns(3)
     md_col.download_button(
         "Download Markdown",
         markdown_file,
@@ -68,6 +68,17 @@ def main():
         excel_file,
         file_name=f"{filename_base}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    schedule_dates_filtered = generate_schedule.filter_schedule(schedule_dates_annotated)
+    schedule_intervals = generate_schedule.get_schedule_intervals(
+        schedule_dates_filtered, start_time, end_time
+    )
+    cal = generate_schedule.to_ical(schedule_intervals)
+    col_ics.download_button(
+        "Download ICS",
+        cal.to_ical(),
+        file_name=f"{filename_base}.ics",
+        mime="text/calendar",
     )
 
 
