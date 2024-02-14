@@ -75,7 +75,7 @@ def main():
     schedule_intervals = generate_schedule.get_schedule_intervals(
         schedule_dates_filtered, start_time, end_time
     )
-    cal = generate_schedule.to_ical(schedule_intervals)
+    cal = generate_schedule.to_ical(schedule_intervals, name=course_name)
     col_ics.download_button(
         "Download ICS",
         cal.to_ical(),
