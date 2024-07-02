@@ -1,4 +1,11 @@
 {
+    "Wintersemester 2024/2025": {
+        "semester_period": ["2024-10-01", "2025-03-31"],
+        "lecture_period": ["2024-10-07", "2025-01-31"],
+        "breaks": [
+            ["Weihnachtsferien", "2024-12-19", "2025-01-05"]
+        ]
+    },
     "Sommersemester 2024": {
         "semester_period": ["2024-04-01", "2024-09-30"],
         "lecture_period": ["2024-04-08", "2024-07-19"],
