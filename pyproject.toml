@@ -1,0 +1,14 @@
+[project]
+name = "schedule-generator"
+version = "0.1.0"
+description = "Generate a semester schedule for university courses in different formats"
+requires-python = ">=3.10"
+dependencies = [
+    "holidays",
+    "icalendar",
+    "pandas",
+    "arrow",
+    "tabulate",
+    "openpyxl",
+    "streamlit",
+]
