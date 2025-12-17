@@ -1,4 +1,11 @@
 {
+    "Sommersemester 2026": {
+        "semester_period": ["2026-04-01", "2026-09-30"],
+        "lecture_period": ["2026-04-13", "2026-07-24"],
+        "breaks": [
+            ["Pfingstferien", "2026-05-23", "2026-31-05"]
+        ]
+    },
     "Wintersemester 2025/2026": {
         "semester_period": ["2025-10-01", "2026-03-31"],
         "lecture_period": ["2025-10-13", "2026-02-06"],
