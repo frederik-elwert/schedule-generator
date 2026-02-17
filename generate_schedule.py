@@ -90,7 +90,7 @@ def annotate_schedule(schedule_dates, semester_dates, state):
     breaks = semester_dates["breaks"]
     # Get holidays for relevant years
     years = set(d.year for d in lecture_period)
-    state_holidays = Germany(years)
+    state_holidays = Germany(years, subdiv=state)
     # Annotate each date
     return [annotate(date, breaks, state_holidays) for date in schedule_dates]
 
